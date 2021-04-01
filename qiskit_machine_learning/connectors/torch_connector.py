@@ -147,10 +147,11 @@ class TorchConnector(Module):
                 else:
                     input_grad = Tensor(input_grad).to(grad_output.dtype)
 
-                if len(grad_output.shape) == 2:
-                    input_grad = grad_output.transpose(0, 1) @ input_grad.transpose(0, 1)
-                else:
-                    input_grad = grad_output @ input_grad  # TODO: validate
+                # if len(grad_output.shape) == 2:
+                #     input_grad = grad_output.transpose(0, 1) @ input_grad.transpose(0, 1)
+                # else:
+                #     input_grad = grad_output @ input_grad  # TODO: validate
+                input_grad = grad_output @ input_grad  # TODO: validate
 
             if weights_grad is not None:
                 if np.prod(weights_grad.shape) == 0:
@@ -166,10 +167,11 @@ class TorchConnector(Module):
                 else:
                     weights_grad = Tensor(weights_grad).to(grad_output.dtype)
 
-                if len(grad_output.shape) == 2:
-                    weights_grad = grad_output.transpose(0, 1) @ weights_grad.transpose(0, 1)
-                else:
-                    weights_grad = grad_output @ weights_grad
+                # if len(grad_output.shape) == 2:
+                #     weights_grad = grad_output.transpose(0, 1) @ weights_grad.transpose(0, 1)
+                # else:
+                #     weights_grad = grad_output @ weights_grad  # TODO: validate
+                weights_grad = grad_output @ weights_grad
 
             # return gradients for the first two arguments and None for the others (i.e. qnn/sparse)
             return input_grad, weights_grad, None, None
